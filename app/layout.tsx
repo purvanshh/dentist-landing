@@ -1,6 +1,10 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
+import FloatingToothCard from "./components/ui/FloatingToothCard";
+import SmoothScroll from "./components/ui/SmoothScroll";
+import Navigation from "./components/ui/Navigation";
+import ScrollProgress from "./components/effects/ScrollProgress";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -23,11 +27,21 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
+    <html lang="en" className="antialiased">
       <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased`}
+        className={`${geistSans.variable} ${geistMono.variable} font-sans bg-white dark:bg-black text-slate-900 dark:text-white`}
       >
-        {children}
+        <SmoothScroll>
+          {/* Floating Tooth Card */}
+          <FloatingToothCard />
+
+          {/* UI Overlay */}
+          <Navigation />
+
+          <main className="relative z-10 flex min-h-screen flex-col">
+            {children}
+          </main>
+        </SmoothScroll>
       </body>
     </html>
   );
