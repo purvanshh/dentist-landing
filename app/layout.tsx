@@ -4,7 +4,6 @@ import "./globals.css";
 import FloatingToothCard from "./components/ui/FloatingToothCard";
 import SmoothScroll from "./components/ui/SmoothScroll";
 import Navigation from "./components/ui/Navigation";
-import ScrollProgress from "./components/effects/ScrollProgress";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
