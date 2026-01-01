@@ -1,27 +1,43 @@
 "use client";
 
 import { motion } from "framer-motion";
-import RadiusOnScroll from "../effects/RadiusOnScroll";
-import Image from "next/image";
+import { AnimatedTestimonials } from "../ui/animated-testimonials";
 
-const team = [
+const doctors = [
     {
+        quote:
+            "With over 15 years of experience in cosmetic dentistry, I'm passionate about creating beautiful, natural-looking smiles. Every patient deserves to feel confident about their smile.",
         name: "Dr. Emily Chen",
-        role: "Cosmetic Specialist",
-        desc: "Expert in smile design.",
-        image: "https://images.unsplash.com/photo-1559839734-2b71ea197ec2?w=400&q=80"
+        designation: "Cosmetic Specialist • 15+ Years Experience",
+        src: "https://images.unsplash.com/photo-1559839734-2b71ea197ec2?w=600&q=80",
     },
     {
+        quote:
+            "Orthodontics is more than just straightening teeth—it's about improving overall oral health and boosting self-esteem. I use the latest technology to ensure efficient, comfortable treatment.",
         name: "Dr. James Wilson",
-        role: "Orthodontist",
-        desc: "Creating perfect alignment.",
-        image: "https://images.unsplash.com/photo-1612349317150-e413f6a5b16d?w=400&q=80"
+        designation: "Orthodontist • Board Certified",
+        src: "https://images.unsplash.com/photo-1612349317150-e413f6a5b16d?w=600&q=80",
     },
     {
+        quote:
+            "Healthy gums are the foundation of a healthy smile. My approach combines gentle care with advanced techniques to treat and prevent periodontal disease effectively.",
         name: "Dr. Sarah Johnson",
-        role: "Periodontist",
-        desc: "Gum health specialist.",
-        image: "https://images.unsplash.com/photo-1594824476967-48c8b964273f?w=400&q=80"
+        designation: "Periodontist • Gum Health Expert",
+        src: "https://images.unsplash.com/photo-1594824476967-48c8b964273f?w=600&q=80",
+    },
+    {
+        quote:
+            "I believe in treating the whole patient, not just the tooth. Pain-free dentistry and patient comfort are my top priorities. Your dental health is in caring hands.",
+        name: "Dr. Michael Park",
+        designation: "General Dentist • Family Care",
+        src: "https://images.unsplash.com/photo-1622253692010-333f2da6031d?w=600&q=80",
+    },
+    {
+        quote:
+            "Restoring smiles through dental implants and reconstructive procedures brings me immense joy. I'm committed to giving patients back their confidence and quality of life.",
+        name: "Dr. Lisa Martinez",
+        designation: "Prosthodontist • Implant Specialist",
+        src: "https://images.unsplash.com/photo-1651008376811-b90baee60c1f?w=600&q=80",
     },
 ];
 
@@ -33,40 +49,16 @@ export default function Team() {
                     initial={{ opacity: 0, y: 30 }}
                     whileInView={{ opacity: 1, y: 0 }}
                     viewport={{ once: true }}
-                    className="mb-16"
+                    className="mb-8 text-center"
                 >
                     <h2 className="text-4xl font-bold text-slate-900 dark:text-white mb-4">MEET THE EXPERTS</h2>
-                    <div className="w-20 h-1 bg-blue-600" />
+                    <div className="w-20 h-1 bg-blue-600 mx-auto" />
+                    <p className="text-slate-500 dark:text-slate-400 mt-4 max-w-2xl mx-auto">
+                        Our team of experienced dental professionals is dedicated to providing you with the highest quality care.
+                    </p>
                 </motion.div>
 
-                <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-                    {team.map((member, i) => (
-                        <motion.div
-                            key={i}
-                            initial={{ opacity: 0, y: 50 }}
-                            whileInView={{ opacity: 1, y: 0 }}
-                            viewport={{ once: true }}
-                            transition={{ delay: i * 0.1 }}
-                        >
-                            <div className="group cursor-pointer">
-                                <RadiusOnScroll startRadius={8} endRadius={100} className="relative w-full h-[400px] mb-6 shadow-md overflow-hidden">
-                                    <Image
-                                        src={member.image}
-                                        alt={member.name}
-                                        fill
-                                        className="object-cover group-hover:scale-105 transition-transform duration-500"
-                                    />
-                                </RadiusOnScroll>
-
-                                <h3 className="text-2xl font-bold text-slate-900 dark:text-white group-hover:text-blue-600 transition-colors">
-                                    {member.name}
-                                </h3>
-                                <p className="text-blue-600 font-medium mb-2">{member.role}</p>
-                                <p className="text-slate-500 dark:text-slate-400">{member.desc}</p>
-                            </div>
-                        </motion.div>
-                    ))}
-                </div>
+                <AnimatedTestimonials testimonials={doctors} autoplay />
             </div>
         </section>
     );
