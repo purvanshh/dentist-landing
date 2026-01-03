@@ -3,7 +3,7 @@
 import { IconArrowLeft, IconArrowRight } from "@tabler/icons-react";
 import { motion, AnimatePresence } from "framer-motion";
 import Image from "next/image";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useMemo } from "react";
 import { cn } from "@/lib/utils";
 
 type Testimonial = {
@@ -23,6 +23,11 @@ export const AnimatedTestimonials = ({
     className?: string;
 }) => {
     const [active, setActive] = useState(0);
+    const [mounted, setMounted] = useState(false);
+
+    useEffect(() => {
+        setMounted(true);
+    }, []);
 
     const handleNext = () => {
         setActive((prev) => (prev + 1) % testimonials.length);
@@ -43,9 +48,63 @@ export const AnimatedTestimonials = ({
         }
     }, [autoplay]);
 
-    const randomRotateY = () => {
-        return Math.floor(Math.random() * 21) - 10;
-    };
+    // Generate deterministic rotations based on index to avoid hydration mismatch
+    const rotations = useMemo(() => {
+        return testimonials.map((_, index) => {
+            // Use a simple deterministic formula based on index
+            const baseRotation = ((index * 7) % 21) - 10;
+            return baseRotation;
+        });
+    }, [testimonials]);
+
+    const getRotation = (index: number) => rotations[index] || 0;
+
+    // Don't render animations until mounted to avoid hydration mismatch
+    if (!mounted) {
+        return (
+            <div className={cn("max-w-sm md:max-w-4xl mx-auto px-4 md:px-8 lg:px-12 py-20", className)}>
+                <div className="relative grid grid-cols-1 md:grid-cols-2 gap-20">
+                    <div>
+                        <div className="relative h-80 w-full">
+                            {testimonials[0] && (
+                                <div className="absolute inset-0 origin-bottom">
+                                    <Image
+                                        src={testimonials[0].src}
+                                        alt={testimonials[0].name}
+                                        width={500}
+                                        height={500}
+                                        draggable={false}
+                                        className="h-full w-full rounded-3xl object-cover object-center"
+                                    />
+                                </div>
+                            )}
+                        </div>
+                    </div>
+                    <div className="flex justify-between flex-col py-4">
+                        <div>
+                            <h3 className="text-2xl font-bold text-foreground">
+                                {testimonials[0]?.name}
+                            </h3>
+                            <p className="text-sm text-muted-foreground">
+                                {testimonials[0]?.designation}
+                            </p>
+                            <p className="text-lg text-muted-foreground mt-8">
+                                {testimonials[0]?.quote}
+                            </p>
+                        </div>
+                        <div className="flex gap-4 pt-12 md:pt-0">
+                            <button className="h-7 w-7 rounded-full bg-secondary flex items-center justify-center">
+                                <IconArrowLeft className="h-5 w-5 text-foreground" />
+                            </button>
+                            <button className="h-7 w-7 rounded-full bg-secondary flex items-center justify-center">
+                                <IconArrowRight className="h-5 w-5 text-foreground" />
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        );
+    }
 
     return (
         <div className={cn("max-w-sm md:max-w-4xl mx-auto px-4 md:px-8 lg:px-12 py-20", className)}>
@@ -60,13 +119,13 @@ export const AnimatedTestimonials = ({
                                         opacity: 0,
                                         scale: 0.9,
                                         z: -100,
-                                        rotate: randomRotateY(),
+                                        rotate: getRotation(index),
                                     }}
                                     animate={{
                                         opacity: isActive(index) ? 1 : 0.7,
                                         scale: isActive(index) ? 1 : 0.95,
                                         z: isActive(index) ? 0 : -100,
-                                        rotate: isActive(index) ? 0 : randomRotateY(),
+                                        rotate: isActive(index) ? 0 : getRotation(index),
                                         zIndex: isActive(index)
                                             ? 999
                                             : testimonials.length + 2 - index,
@@ -76,7 +135,7 @@ export const AnimatedTestimonials = ({
                                         opacity: 0,
                                         scale: 0.9,
                                         z: 100,
-                                        rotate: randomRotateY(),
+                                        rotate: getRotation(index),
                                     }}
                                     transition={{
                                         duration: 0.4,

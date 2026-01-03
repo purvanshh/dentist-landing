@@ -27,49 +27,72 @@ const articles = [
 
 export default function Blog() {
     return (
-        <section id="blog" className="relative w-full py-32 px-6 bg-white dark:bg-black">
-            <div className="max-w-7xl mx-auto flex flex-col md:flex-row gap-16">
+        <section id="blog" className="relative w-full py-32 px-6">
+            {/* Background blobs */}
+            <div className="absolute top-20 left-20 w-72 h-72 bg-cyan-400/15 rounded-full blur-3xl" />
+            <div className="absolute bottom-40 right-10 w-80 h-80 bg-indigo-400/15 rounded-full blur-3xl" />
+            
+            <div className="max-w-7xl mx-auto flex flex-col md:flex-row gap-16 relative">
                 {/* Left: Sticky Header */}
                 <div className="md:w-1/3">
-                    <div className="sticky top-32">
-                        <h2 className="text-5xl font-bold text-slate-900 dark:text-white mb-6">JOURNAL</h2>
+                    <motion.div 
+                        initial={{ opacity: 0, x: -30 }}
+                        whileInView={{ opacity: 1, x: 0 }}
+                        viewport={{ once: true }}
+                        className="sticky top-32"
+                    >
+                        <span className="inline-flex items-center gap-2 py-2 px-5 rounded-full glass-card-strong text-indigo-600 dark:text-indigo-400 text-xs font-bold tracking-wider mb-6 shadow-lg">
+                            INSIGHTS
+                        </span>
+                        <h2 className="text-5xl font-bold text-slate-900 dark:text-white mb-6">
+                            <span className="text-transparent bg-clip-text bg-gradient-to-r from-indigo-600 via-purple-500 to-cyan-500">JOURNAL</span>
+                        </h2>
                         <p className="text-lg text-slate-600 dark:text-slate-400 mb-8">
                             Insights, news, and dental health advice from our experts.
                         </p>
-                        <button className="text-blue-600 font-bold flex items-center gap-2 hover:gap-3 transition-all">
-                            View All Articles <ArrowUpRight size={20} />
-                        </button>
-                    </div>
+                        <motion.button 
+                            whileHover={{ x: 5 }}
+                            className="inline-flex items-center gap-2 px-6 py-3 rounded-full glass-card-strong text-indigo-600 dark:text-indigo-400 font-bold shadow-lg hover:shadow-xl transition-shadow group"
+                        >
+                            View All Articles 
+                            <ArrowUpRight size={20} className="group-hover:rotate-45 transition-transform" />
+                        </motion.button>
+                    </motion.div>
                 </div>
 
                 {/* Right: Article List */}
-                <div className="md:w-2/3 flex flex-col gap-10">
+                <div className="md:w-2/3 flex flex-col gap-6">
                     {articles.map((article, i) => (
                         <motion.div
                             key={i}
-                            initial={{ opacity: 0, x: 20 }}
-                            whileInView={{ opacity: 1, x: 0 }}
+                            initial={{ opacity: 0, y: 30 }}
+                            whileInView={{ opacity: 1, y: 0 }}
                             viewport={{ once: true }}
                             transition={{ delay: i * 0.1 }}
-                            className="group border-b border-slate-100 dark:border-zinc-800 pb-10 cursor-pointer flex gap-6"
+                            whileHover={{ x: 10 }}
+                            className="group glass-card-strong rounded-2xl p-5 cursor-pointer flex gap-6 hover:shadow-2xl hover:shadow-indigo-500/15 transition-all duration-300"
                         >
-                            <div className="relative w-32 h-32 rounded-xl overflow-hidden flex-shrink-0">
+                            <motion.div 
+                                whileHover={{ scale: 1.05 }}
+                                className="relative w-36 h-36 rounded-xl overflow-hidden flex-shrink-0 shadow-lg"
+                            >
                                 <Image
                                     src={article.image}
                                     alt={article.title}
                                     fill
-                                    className="object-cover group-hover:scale-110 transition-transform duration-500"
+                                    className="object-cover"
                                 />
-                            </div>
-                            <div className="flex-1">
-                                <div className="flex justify-between items-start mb-4">
-                                    <span className="text-sm font-bold text-blue-600 uppercase tracking-wider">{article.category}</span>
+                                <div className="absolute inset-0 bg-gradient-to-t from-indigo-600/30 to-transparent opacity-0 group-hover:opacity-100 transition-opacity" />
+                            </motion.div>
+                            <div className="flex-1 py-2">
+                                <div className="flex justify-between items-start mb-3">
+                                    <span className="text-xs font-bold px-3 py-1.5 rounded-full bg-gradient-to-r from-indigo-500 to-cyan-500 text-white uppercase tracking-wider shadow-md">{article.category}</span>
                                     <span className="text-sm text-slate-400">{article.date}</span>
                                 </div>
-                                <h3 className="text-2xl font-bold text-slate-900 dark:text-white group-hover:text-blue-600 transition-colors mb-4">
+                                <h3 className="text-xl font-bold text-slate-900 dark:text-white group-hover:text-indigo-600 dark:group-hover:text-indigo-400 transition-colors mb-3">
                                     {article.title}
                                 </h3>
-                                <p className="text-slate-500 dark:text-slate-400 max-w-lg text-sm">
+                                <p className="text-slate-500 dark:text-slate-400 text-sm line-clamp-2">
                                     Read more about how we are revolutionizing the way you experience dental care.
                                 </p>
                             </div>

@@ -2,14 +2,8 @@
 
 import { useState, useEffect } from "react";
 import Link from "next/link";
-import { Menu, X, Star } from "lucide-react";
-import { cn } from "@/lib/utils"; // Assuming standard Shadcn/Tailwind util exists, else I'll create it inline or use clsx directly
-
-// Inline util if lib/utils doesn't exist yet, but usually it does in modern stacks or I'll create it momentarily.
-// For now I'll implement a simple joiner to be safe.
-function classNames(...classes: string[]) {
-    return classes.filter(Boolean).join(" ");
-}
+import { Menu, X } from "lucide-react";
+import { motion, AnimatePresence } from "framer-motion";
 
 export default function Navigation() {
     const [isOpen, setIsOpen] = useState(false);
@@ -33,69 +27,117 @@ export default function Navigation() {
     ];
 
     return (
-        <nav
-            className={classNames(
-                "fixed top-0 left-0 right-0 z-50 transition-all duration-300",
+        <motion.nav
+            initial={{ y: -100, opacity: 0 }}
+            animate={{ y: 0, opacity: 1 }}
+            transition={{ duration: 0.8, ease: "easeOut" }}
+            className={`fixed top-4 left-4 right-4 z-50 transition-all duration-500 rounded-2xl ${
                 scrolled
-                    ? "bg-white/70 backdrop-blur-md shadow-sm dark:bg-black/70 py-4"
-                    : "bg-transparent py-6"
-            )}
+                    ? "glass-nav shadow-xl shadow-indigo-500/10"
+                    : "bg-white/30 dark:bg-black/30 backdrop-blur-md border border-white/20"
+            }`}
         >
-            <div className="max-w-7xl mx-auto px-6 flex items-center justify-between">
+            <div className="max-w-7xl mx-auto px-6 py-4 flex items-center justify-between">
                 {/* Logo */}
-                <Link href="/" className="flex items-center gap-2 group">
-                    {/* Using a simple text logo or placeholder icon for now */}
-                    <div className="w-8 h-8 bg-blue-500 rounded-lg flex items-center justify-center text-white font-bold group-hover:rotate-12 transition-transform">
+                <Link href="/" className="flex items-center gap-3 group">
+                    <motion.div 
+                        whileHover={{ rotate: 12, scale: 1.1 }}
+                        className="w-10 h-10 bg-gradient-to-br from-indigo-500 to-cyan-400 rounded-xl flex items-center justify-center text-white font-bold shadow-lg shadow-indigo-500/30"
+                    >
                         D
-                    </div>
-                    <span className="text-xl font-bold tracking-tight text-slate-800 dark:text-white">
+                    </motion.div>
+                    <span className="text-xl font-bold tracking-tight bg-gradient-to-r from-slate-800 to-slate-600 dark:from-white dark:to-slate-300 bg-clip-text text-transparent">
                         DentalWellness
                     </span>
                 </Link>
 
                 {/* Desktop Menu */}
-                <div className="hidden md:flex items-center gap-8">
-                    {navLinks.map((link) => (
-                        <Link
+                <div className="hidden md:flex items-center gap-2">
+                    {navLinks.map((link, index) => (
+                        <motion.div
                             key={link.name}
-                            href={link.href}
-                            className="text-sm font-medium text-slate-600 hover:text-blue-600 transition-colors dark:text-slate-300 dark:hover:text-blue-400"
+                            initial={{ opacity: 0, y: -20 }}
+                            animate={{ opacity: 1, y: 0 }}
+                            transition={{ delay: index * 0.1 }}
                         >
-                            {link.name}
-                        </Link>
+                            <Link
+                                href={link.href}
+                                className="relative px-4 py-2 text-sm font-medium text-slate-600 dark:text-slate-300 hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors group"
+                            >
+                                {link.name}
+                                <span className="absolute bottom-0 left-1/2 -translate-x-1/2 w-0 h-0.5 bg-gradient-to-r from-indigo-500 to-cyan-400 group-hover:w-full transition-all duration-300 rounded-full" />
+                            </Link>
+                        </motion.div>
                     ))}
-                    <Link
-                        href="#contact"
-                        className="px-6 py-2.5 rounded-full bg-blue-600 text-white text-sm font-semibold hover:bg-blue-700 transition-all hover:scale-105 shadow-lg shadow-blue-500/20"
+                    <motion.div
+                        initial={{ opacity: 0, scale: 0.8 }}
+                        animate={{ opacity: 1, scale: 1 }}
+                        transition={{ delay: 0.6 }}
                     >
-                        Book Now
-                    </Link>
+                        <Link
+                            href="#contact"
+                            className="ml-4 px-6 py-2.5 rounded-full bg-gradient-to-r from-indigo-600 to-indigo-500 text-white text-sm font-semibold hover:shadow-lg hover:shadow-indigo-500/30 transition-all hover:scale-105 active:scale-95"
+                        >
+                            Book Now
+                        </Link>
+                    </motion.div>
                 </div>
 
                 {/* Mobile Toggle */}
-                <button
-                    className="md:hidden text-slate-800 dark:text-white"
+                <motion.button
+                    whileTap={{ scale: 0.9 }}
+                    className="md:hidden w-10 h-10 rounded-xl glass-card-strong flex items-center justify-center text-slate-800 dark:text-white shadow-lg"
                     onClick={() => setIsOpen(!isOpen)}
                 >
-                    {isOpen ? <X size={28} /> : <Menu size={28} />}
-                </button>
+                    {isOpen ? <X size={20} /> : <Menu size={20} />}
+                </motion.button>
             </div>
 
             {/* Mobile Menu */}
-            {isOpen && (
-                <div className="absolute top-full left-0 w-full bg-white/95 backdrop-blur-xl border-t border-slate-100 dark:bg-black/95 dark:border-slate-800 p-6 flex flex-col gap-6 md:hidden shadow-2xl h-screen">
-                    {navLinks.map((link) => (
-                        <Link
-                            key={link.name}
-                            href={link.href}
-                            className="text-2xl font-medium text-slate-800 dark:text-white"
-                            onClick={() => setIsOpen(false)}
-                        >
-                            {link.name}
-                        </Link>
-                    ))}
-                </div>
-            )}
-        </nav>
+            <AnimatePresence>
+                {isOpen && (
+                    <motion.div
+                        initial={{ opacity: 0, height: 0 }}
+                        animate={{ opacity: 1, height: "auto" }}
+                        exit={{ opacity: 0, height: 0 }}
+                        transition={{ duration: 0.3 }}
+                        className="md:hidden overflow-hidden"
+                    >
+                        <div className="px-6 pb-6 flex flex-col gap-2">
+                            {navLinks.map((link, index) => (
+                                <motion.div
+                                    key={link.name}
+                                    initial={{ opacity: 0, x: -20 }}
+                                    animate={{ opacity: 1, x: 0 }}
+                                    transition={{ delay: index * 0.05 }}
+                                >
+                                    <Link
+                                        href={link.href}
+                                        className="block px-4 py-3 rounded-xl text-lg font-medium text-slate-800 dark:text-white hover:bg-white/50 dark:hover:bg-white/5 transition-colors"
+                                        onClick={() => setIsOpen(false)}
+                                    >
+                                        {link.name}
+                                    </Link>
+                                </motion.div>
+                            ))}
+                            <motion.div
+                                initial={{ opacity: 0, y: 20 }}
+                                animate={{ opacity: 1, y: 0 }}
+                                transition={{ delay: 0.3 }}
+                                className="mt-4"
+                            >
+                                <Link
+                                    href="#contact"
+                                    className="block w-full text-center px-6 py-3 rounded-xl bg-gradient-to-r from-indigo-600 to-indigo-500 text-white font-semibold"
+                                    onClick={() => setIsOpen(false)}
+                                >
+                                    Book Now
+                                </Link>
+                            </motion.div>
+                        </div>
+                    </motion.div>
+                )}
+            </AnimatePresence>
+        </motion.nav>
     );
 }

@@ -27,42 +27,53 @@ const testimonials = [
 
 export default function Stories() {
     return (
-        <section id="stories" className="relative w-full py-32 px-6 bg-white dark:bg-black overflow-hidden">
-            <div className="max-w-7xl mx-auto">
+        <section id="stories" className="relative w-full py-32 px-6 overflow-hidden">
+            {/* Background blobs */}
+            <div className="absolute top-40 right-0 w-96 h-96 bg-purple-400/20 rounded-full blur-3xl" />
+            <div className="absolute bottom-20 left-10 w-72 h-72 bg-cyan-400/20 rounded-full blur-3xl" />
+            
+            <div className="max-w-7xl mx-auto relative">
                 <motion.div
                     initial={{ opacity: 0, scale: 0.95 }}
                     whileInView={{ opacity: 1, scale: 1 }}
                     viewport={{ once: true }}
                     className="text-center mb-20"
                 >
+                    <span className="inline-flex items-center gap-2 py-2 px-5 rounded-full glass-card-strong text-indigo-600 dark:text-indigo-400 text-xs font-bold tracking-wider mb-6 shadow-lg">
+                        TESTIMONIALS
+                    </span>
                     <h2 className="text-4xl md:text-6xl font-bold text-slate-900 dark:text-white mb-6">
-                        REAL STORIES
+                        REAL <span className="text-transparent bg-clip-text bg-gradient-to-r from-indigo-600 via-purple-500 to-cyan-500">STORIES</span>
                     </h2>
-                    <p className="text-xl text-slate-500 max-w-2xl mx-auto">
+                    <p className="text-xl text-slate-500 dark:text-slate-400 max-w-2xl mx-auto">
                         See the transformations that change lives.
                     </p>
                 </motion.div>
 
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-12 items-center">
                     {/* Left: Testimonials List */}
-                    <div className="flex flex-col gap-8">
+                    <div className="flex flex-col gap-6">
                         {testimonials.map((t, i) => (
                             <motion.div
                                 key={i}
                                 initial={{ opacity: 0, x: -50 }}
                                 whileInView={{ opacity: 1, x: 0 }}
                                 viewport={{ once: true }}
-                                transition={{ delay: i * 0.2 }}
-                                className="p-8 rounded-2xl bg-slate-50 dark:bg-zinc-900 border border-slate-100 dark:border-zinc-800 flex gap-4 items-start"
+                                transition={{ delay: i * 0.15 }}
+                                whileHover={{ scale: 1.02, x: 10 }}
+                                className="p-6 rounded-2xl glass-card-strong flex gap-4 items-start cursor-pointer transition-all duration-300 hover:shadow-2xl hover:shadow-indigo-500/15"
                             >
-                                <div className="relative w-12 h-12 rounded-full overflow-hidden flex-shrink-0">
+                                <motion.div 
+                                    whileHover={{ scale: 1.1 }}
+                                    className="relative w-14 h-14 rounded-full overflow-hidden flex-shrink-0 ring-3 ring-indigo-500/30 shadow-lg"
+                                >
                                     <Image src={t.image} alt={t.name} fill className="object-cover" />
-                                </div>
-                                <div>
-                                    <p className="text-lg text-slate-700 dark:text-slate-300 italic mb-4">"{t.quote}"</p>
+                                </motion.div>
+                                <div className="flex-1">
+                                    <p className="text-base text-slate-700 dark:text-slate-300 italic mb-3">"{t.quote}"</p>
                                     <div className="flex justify-between items-center">
                                         <span className="font-bold text-slate-900 dark:text-white">{t.name}</span>
-                                        <span className="text-sm text-blue-600 font-medium">{t.treatment}</span>
+                                        <span className="text-xs px-3 py-1.5 rounded-full bg-gradient-to-r from-indigo-500 to-cyan-500 text-white font-medium shadow-md">{t.treatment}</span>
                                     </div>
                                 </div>
                             </motion.div>
@@ -70,22 +81,36 @@ export default function Stories() {
                     </div>
 
                     {/* Right: Before/After Visual Feature */}
-                    <UnfocusedEffect blurAmount={8} chromaticAberration={4}>
-                        <div className="relative w-full h-[600px] rounded-3xl overflow-hidden shadow-2xl">
-                            <Image
-                                src="https://images.unsplash.com/photo-1606811841689-23dfddce3e95?w=800&q=80"
-                                alt="Patient smiling after dental treatment"
-                                fill
-                                className="object-cover"
-                            />
-                            <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent flex items-end p-8">
-                                <div className="text-white">
-                                    <h3 className="text-2xl font-bold mb-2">Patient Transformation</h3>
-                                    <p className="text-white/80">Before & After Gallery</p>
+                    <motion.div
+                        initial={{ opacity: 0, scale: 0.9 }}
+                        whileInView={{ opacity: 1, scale: 1 }}
+                        viewport={{ once: true }}
+                        transition={{ duration: 0.6 }}
+                    >
+                        <UnfocusedEffect blurAmount={8} chromaticAberration={4}>
+                            <div className="relative w-full h-[600px] rounded-3xl overflow-hidden shadow-2xl shadow-indigo-500/20">
+                                <Image
+                                    src="https://images.unsplash.com/photo-1606811841689-23dfddce3e95?w=800&q=80"
+                                    alt="Patient smiling after dental treatment"
+                                    fill
+                                    className="object-cover"
+                                />
+                                <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/20 to-transparent flex items-end p-8">
+                                    <motion.div 
+                                        initial={{ opacity: 0, y: 20 }}
+                                        whileInView={{ opacity: 1, y: 0 }}
+                                        viewport={{ once: true }}
+                                        className="text-white"
+                                    >
+                                        <h3 className="text-2xl font-bold mb-2">Patient Transformation</h3>
+                                        <p className="text-white/80">Before & After Gallery</p>
+                                    </motion.div>
                                 </div>
+                                {/* Decorative gradient border */}
+                                <div className="absolute inset-0 rounded-3xl ring-1 ring-inset ring-white/20" />
                             </div>
-                        </div>
-                    </UnfocusedEffect>
+                        </UnfocusedEffect>
+                    </motion.div>
                 </div>
             </div>
         </section>

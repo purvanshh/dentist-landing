@@ -43,17 +43,32 @@ const doctors = [
 
 export default function Team() {
     return (
-        <section id="team" className="relative w-full py-32 px-6 bg-slate-50 dark:bg-zinc-900">
-            <div className="max-w-7xl mx-auto">
+        <section id="team" className="relative w-full py-32 px-6 overflow-hidden">
+            {/* Background decoration */}
+            <div className="absolute inset-0 section-glass pointer-events-none" />
+            <div className="absolute top-20 right-20 w-80 h-80 bg-purple-400/25 rounded-full blur-3xl" />
+            <div className="absolute bottom-40 left-10 w-64 h-64 bg-indigo-400/20 rounded-full blur-3xl" />
+            
+            <div className="max-w-7xl mx-auto relative">
                 <motion.div
                     initial={{ opacity: 0, y: 30 }}
                     whileInView={{ opacity: 1, y: 0 }}
                     viewport={{ once: true }}
-                    className="mb-8 text-center"
+                    className="mb-12 text-center"
                 >
-                    <h2 className="text-4xl font-bold text-slate-900 dark:text-white mb-4">MEET THE EXPERTS</h2>
-                    <div className="w-20 h-1 bg-blue-600 mx-auto" />
-                    <p className="text-slate-500 dark:text-slate-400 mt-4 max-w-2xl mx-auto">
+                    <span className="inline-flex items-center gap-2 py-2 px-5 rounded-full glass-card-strong text-indigo-600 dark:text-indigo-400 text-xs font-bold tracking-wider mb-6 shadow-lg">
+                        OUR TEAM
+                    </span>
+                    <h2 className="text-4xl md:text-5xl font-bold text-slate-900 dark:text-white mb-4">
+                        MEET THE <span className="text-transparent bg-clip-text bg-gradient-to-r from-indigo-600 via-purple-500 to-pink-500">EXPERTS</span>
+                    </h2>
+                    <motion.div 
+                        initial={{ scaleX: 0 }}
+                        whileInView={{ scaleX: 1 }}
+                        viewport={{ once: true }}
+                        className="w-24 h-1.5 bg-gradient-to-r from-indigo-600 via-purple-500 to-cyan-400 mx-auto rounded-full shadow-lg shadow-indigo-500/30" 
+                    />
+                    <p className="text-slate-500 dark:text-slate-400 mt-6 max-w-2xl mx-auto">
                         Our team of experienced dental professionals is dedicated to providing you with the highest quality care.
                     </p>
                 </motion.div>

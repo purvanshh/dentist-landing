@@ -28,9 +28,12 @@ export default function RootLayout({
   return (
     <html lang="en" className="antialiased">
       <body
-        className={`${geistSans.variable} ${geistMono.variable} font-sans bg-white dark:bg-black text-slate-900 dark:text-white`}
+        className={`${geistSans.variable} ${geistMono.variable} font-sans bg-background text-foreground overflow-x-hidden`}
       >
         <SmoothScroll>
+          {/* Animated gradient mesh background */}
+          <div className="fixed inset-0 gradient-mesh -z-10" />
+          
           {/* Floating Tooth Card */}
           <FloatingToothCard />
 
